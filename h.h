@@ -11,7 +11,14 @@ public:
         return s[pos];
     }
 
+    friend std::ostream& operator<<(std::ostream &os, const H& h);
+
 private:
     int pos;
 };
+
+std::ostream& operator<<(std::ostream& os, const H& h) {
+    os << h.pos;
+    return os;
+}
 

@@ -33,13 +33,35 @@ struct Runner {
         for (int i = 0; i != z; ++i) {
             const std::string hash_comp = fs[i].get_hash_composition(emb);
 
+            LN(ldebug, id) << "RUN:\n\tinput:\t" << data[index] << "\n\tembedding: " << emb << "\n\tf: " << fs[i] << "\n\thash: " << hash_comp;
+
             if (clusters[i].count(hash_comp)) {
                 clusters[i][hash_comp].insert(index);
             } else {
                 clusters[i][hash_comp] = {index};
             }
         }
+    }
 
+    void log_result() {
+        LN(ldebug, id) << get_log_result();
+    }
+
+    std::string get_log_result() const {
+        std::stringstream buffer;
+        buffer << "Possible clusters for F's:";
+        for (int i = 0; i != fs.size(); ++i) {
+            buffer << "\n\tf: " << fs[i] << "";
+            for (const auto& hash_res : clusters[i]) {
+                buffer << "\n\thash: " << hash_res.first;
+                buffer << "\n\tinit strings:";
+                for (int initial_string_id : hash_res.second) {
+                    buffer<< "\n\t\t" << initial_string_id << " " << data[initial_string_id];
+                }
+            }
+        }
+
+        return buffer.str();
     }
 
     int compare_clusters(const std::unordered_set<int>& l, const std::unordered_set<int>& r) const {

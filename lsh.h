@@ -80,6 +80,8 @@ private:
             runner.run(i);
         }
 
+        runner.log_result();
+
         const auto clusters = runner.get_clusters();
 
         // write to file

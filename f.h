@@ -20,8 +20,16 @@ public:
         return result;
     }
 
+    friend std::ostream& operator<<(std::ostream &os, const F& f);
 
 private:
     std::vector<H> hash_functions;
 
 };
+
+std::ostream& operator<<(std::ostream& os, const F& f) {
+    for (const auto& h : f.hash_functions) {
+        os << h << " ";
+    }
+    return os;
+}

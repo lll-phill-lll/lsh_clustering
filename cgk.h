@@ -49,7 +49,7 @@ public:
 
         }
 
-        LN(ldebug, runner_id) << "embedding for string\n\t\t" << input << "\n\tis\n\t\t" << res;
+        LN(ldebug, runner_id) << "embedding for string\n\t" << input << "\n\tis\n\t" << res;
         return res;
     }
 
