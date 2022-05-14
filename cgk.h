@@ -78,7 +78,8 @@ private:
         R.resize(alphabet_size, std::vector<int>(embedding_len));
         for (int i = 0; i != alphabet_size; ++i) {
             for (int j = 0; j != embedding_len; ++j) {
-                R[i][j] = std::rand() % 2;
+                int percent = std::rand() % 100;
+                R[i][j] = (percent > 60) ? 1 : 0;
             }
         }
     }

@@ -31,7 +31,7 @@ int main(int argc, char** argv) {
 
     data = Data(argv[1]);
 
-    LSH lsh(2, 2, 2, 10);
+    LSH lsh(2, 2, 4, 10);
 
     const auto& clusters = lsh.get_clusters();
 

@@ -3,6 +3,7 @@
 #include <iostream>
 
 #include "dict.h"
+#include "constants.h"
 
 class ACGT : public IDict {
 public:
@@ -49,7 +50,7 @@ private:
     static constexpr char C = 'C';
     static constexpr char G = 'G';
     static constexpr char T = 'T';
-    static constexpr char EXTRA = 'N';
+    static constexpr char EXTRA = EXTRA_BASE;
 
 
 };

@@ -82,7 +82,7 @@ private:
 
         runner.log_result();
 
-        const auto clusters = runner.get_clusters();
+        // const auto clusters = runner.get_clusters();
 
         // write to file
     }

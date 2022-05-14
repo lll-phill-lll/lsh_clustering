@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "h.h"
+#include "constants.h"
 
 class F {
 public:
@@ -14,7 +15,10 @@ public:
         result.reserve(hash_functions.size());
 
         for (const auto& h : hash_functions) {
-            result.push_back(h.get_hash(s));
+            char next_hash_letter = h.get_hash(s);
+            if (next_hash_letter != EXTRA_BASE) {
+                result.push_back(next_hash_letter);
+            }
         }
 
         return result;
