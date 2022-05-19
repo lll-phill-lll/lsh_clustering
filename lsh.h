@@ -67,7 +67,7 @@ private:
     static Prediction execute_runner(Runner runner) {
         for (int i = 0; i != data.size(); ++i) {
             if (i % 1000 == 0) {
-                std::cout << i << std::endl;
+                L(linfo) << "Processed: " << i;
             }
             runner.run(i);
         }
