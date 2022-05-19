@@ -28,26 +28,49 @@ public:
         hash_to_cluster[hash] = cluster_idx;
     }
 
-    std::unordered_set<int> get_cluster_for_object(int object) {
+    void add_cluster(const std::unordered_set<int>& cluster) {
+        clusters.push_back(cluster);
+        int cluster_idx = clusters.size() - 1;
+        for (int object : cluster) {
+            object_to_cluster[object] = cluster_idx;
+        }
+    }
+
+    std::unordered_set<int> get_cluster_for_object(int object) const {
         assert(object_to_cluster.count(object) > 0);
 
-        int cluster_idx = object_to_cluster[object];
+        const auto cluster_idx = object_to_cluster.at(object);
 
         return clusters[cluster_idx];
-
     }
 
     std::string get_log() const {
         std::stringstream buffer;
 
-        for (const auto& [hash, cluster_idx] : hash_to_cluster) {
-            buffer << "\n\t" << hash;
-            for (int object : clusters[cluster_idx]) {
-                buffer << "\n\t\t" << object << ": " << data[object];
+        if (!hash_to_cluster.empty()) {
+            for (const auto& [hash, cluster_idx] : hash_to_cluster) {
+                buffer << "\n\t" << hash;
+                for (int object : clusters[cluster_idx]) {
+                    buffer << "\n\t\t" << object << ": " << data[object];
+                }
             }
+        } else {
+            int i = 0;
+            for (const auto& cluster : clusters) {
+                buffer << "\ncluster " << i << ":";
+
+                for (int object : cluster) {
+                    buffer << "\n\t" << object << ": " << data[object];
+                }
+                ++i;
+            }
+
         }
         return buffer.str();
+    }
 
+    int get_objects_count() const {
+        return object_to_cluster.size();
     }
 
 
@@ -56,5 +79,4 @@ private:
     std::vector<std::unordered_set<int>> clusters;
 
     std::unordered_map<std::string, int> hash_to_cluster;
-
 };

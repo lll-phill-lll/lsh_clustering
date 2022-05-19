@@ -29,7 +29,7 @@ public:
         // each embedding is processed as distinct runner
         for (int i = 0; i != r; ++i) {
             L(linfo)<< "creating runner for embedding";
-            Runner runner(_word_len, z, m);
+            Runner runner(_word_len, z, m, 70);
             runners.push_back(runner);
         }
 
@@ -82,7 +82,8 @@ private:
 
         runner.log_result();
 
-        // const auto clusters = runner.get_clusters();
+        const auto prediction = runner.get_results();
+        L(ldebug) << "Prediction: " << prediction.get_log();
 
         // write to file
     }
