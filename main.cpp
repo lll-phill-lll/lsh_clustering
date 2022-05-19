@@ -1,25 +1,28 @@
 #include <iostream>
 
-// #include "example.h"
 #include "lsh.h"
 #include "data.h"
 #include "log.h"
+#include "config.h"
+
 
 void set_logger() {
     initLogger( "logfile.log", ldebug);
 }
 
 int main(int argc, char** argv) {
-    if (argc < 2) {
-        std::cerr << "Usage: ./lsh <path to file>" << std::endl;
+    Config config;
+    if (config.Load(argc, argv) != 0) {
         exit(1);
     }
+
     std::srand(std::time(nullptr));
+
     set_logger();
 
-    data = Data(argv[1]);
+    data = Data(config.input_file);
 
-    LSH lsh(20, 20, 40, 5000);
+    LSH lsh(config);
 
     const auto& prediction = lsh.get_clusters();
     L(linfo) << "Final result:\n" << prediction.get_log();
