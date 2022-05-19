@@ -56,7 +56,7 @@ public:
         }
         Intersector intersector(config.runner_consensus_threshold);
 
-        return intersector.intersect(predictions, data.size());
+        return intersector.intersect(predictions, data->size());
 
     }
 
@@ -65,7 +65,7 @@ private:
     std::vector<Runner> runners;
 
     static Prediction execute_runner(Runner runner) {
-        for (int i = 0; i != data.size(); ++i) {
+        for (int i = 0; i != data->size(); ++i) {
             if (i % 1000 == 0) {
                 L(linfo) << "Processed: " << i;
             }

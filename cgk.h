@@ -7,6 +7,7 @@
 #include <sstream>
 
 #include "dict.h"
+#include "data.h"
 #include "log.h"
 
 template <class Dict>
@@ -29,14 +30,15 @@ public:
         LN(ldebug, runner_id) << get_init_state();
     }
 
-    std::string compute(const std::string& input) {
+    std::string compute(int index) {
+        int input_size = data->get_len(index);
         std::string res;
         res.resize(embedding_len);
         int i = 0;
         for (int j = 0; j != embedding_len; ++j) {
             char c = dict.get_extra();
-            if (i < input.size()) {
-                c = input[i];
+            if (i < input_size) {
+                c = data->get_char(index, i);
             }
             res[j] = c;
             // deal with arbitrary letters
@@ -48,8 +50,9 @@ public:
             }
 
         }
+        std::cout << "Compute" << std::endl;
 
-        LN(ldebug, runner_id) << "embedding for string\n\t" << input << "\n\tis\n\t" << res;
+        LN(ldebug, runner_id) << "embedding for string\n\t" << "<input>" << "\n\tis\n\t" << res;
         return res;
     }
 

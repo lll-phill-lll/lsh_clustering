@@ -7,7 +7,7 @@
 #include "config.h"
 
 void set_logger() {
-    initLogger( "logfile.log", linfo);
+    initLogger( "logfile.log", ldebug);
 }
 
 int main(int argc, char** argv) {
@@ -20,7 +20,7 @@ int main(int argc, char** argv) {
 
     set_logger();
 
-    data = Data(config.input_file);
+    data = new Data(config.input_file);
 
     LSH lsh(config);
 

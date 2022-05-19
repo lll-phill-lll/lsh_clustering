@@ -10,7 +10,7 @@ public:
         app.add_option("-z,--z,z", z, "Number of hash functions")->required();
         app.add_option("-r,--r,r", r, "Number of different embeddings")->required();
         app.add_option("-m,--m,m", m, "Size of hash function")->required();
-        app.add_option("-w,--word_len,word_len", m, "Average word length in dataset")->required();
+        app.add_option("-w,--word_len,word_len", word_len, "Average word length in dataset")->required();
 
         app.add_option("-o,--out_file,out_file", output_file, "Output file name")->capture_default_str();
         app.add_option("-t,--thread_num,thread_num", thread_num, "Number of threads")->capture_default_str();

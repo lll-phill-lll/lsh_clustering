@@ -36,11 +36,11 @@ struct Runner {
     }
 
     void run(int index) {
-        const std::string emb = cgk.compute(data[index]);
+        const std::string emb = cgk.compute(index);
         for (int i = 0; i != z; ++i) {
             const std::string hash_comp = fs[i].get_hash_composition(emb);
 
-            LN(ldebug, id) << "RUN:\n\tinput:\t" << data[index] << "\n\tembedding: " << emb << "\n\tf: " << fs[i] << "\n\thash: " << hash_comp;
+            // LN(ldebug, id) << "RUN:\n\tinput:\t" << data[index] << "\n\tembedding: " << emb << "\n\tf: " << fs[i] << "\n\thash: " << hash_comp;
             predictions[i].add(hash_comp, index);
         }
         ++processed_words;

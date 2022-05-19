@@ -51,7 +51,7 @@ public:
             for (const auto& [hash, cluster_idx] : hash_to_cluster) {
                 buffer << "\n\t" << hash;
                 for (int object : clusters[cluster_idx]) {
-                    buffer << "\n\t\t" << object << ": " << data[object];
+                    buffer << "\n\t\t" << object << ": " << (*data)[object];
                 }
             }
         } else {
@@ -60,7 +60,7 @@ public:
                 buffer << "\ncluster " << i << ":";
 
                 for (int object : cluster) {
-                    buffer << "\n\t" << object << ": " << data[object];
+                    buffer << "\n\t" << object << ": " << (*data)[object];
                 }
                 ++i;
             }
