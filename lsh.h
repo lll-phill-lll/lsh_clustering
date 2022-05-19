@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <thread>
+#include <future>
 
 #include "dict_acgt.h"
 #include "cgk.h"
@@ -12,6 +13,7 @@
 #include "data.h"
 #include "runner.h"
 #include "log.h"
+#include "prediction.h"
 
 class LSH {
 
@@ -29,7 +31,7 @@ public:
         // each embedding is processed as distinct runner
         for (int i = 0; i != r; ++i) {
             L(linfo)<< "creating runner for embedding";
-            Runner runner(_word_len, z, m, 70);
+            Runner runner(_word_len, z, m, 50);
             runners.push_back(runner);
         }
 
@@ -37,32 +39,26 @@ public:
     }
 
 
-    std::vector<std::vector<int>> get_clusters() {
-        std::vector<std::unordered_set<int>> clusters;
+    Prediction get_clusters() {
+        std::vector<Prediction> predictions;
 
-        std::vector<std::thread> threads;
+        std::vector<std::future<Prediction>> futures;
 
         // compute each embedding
         for (int i = 0; i != r; ++i) {
-            std::thread t(execute_runner, runners[i]);
-            threads.push_back(std::move(t));
+            futures.push_back( std::async(std::launch::async, execute_runner, runners[i]));
 
-            if (threads.size() == threads_num || i == z - 1) {
-                for (int th_num = 0; th_num != threads.size(); ++th_num) {
-                    threads[th_num].join();
+            if (futures.size() == threads_num || i == r - 1) {
+                for (int future_num = 0; future_num != futures.size(); ++future_num) {
+                    predictions.push_back(futures[future_num].get());
                 }
-                threads.clear();
+                futures.clear();
             }
         }
+        Intersector intersector(0);
 
-        // for (const auto& cluster : clusters) {
-        //     for (int c : cluster) {
-        //         std::cout << c << " ";
-        //     }
-        //     std::cout << std::endl;
-        // }
+        return intersector.intersect(predictions, data.size());
 
-        return {};
     }
 
 private:
@@ -72,7 +68,7 @@ private:
     int threads_num;
     std::vector<Runner> runners;
 
-    static void execute_runner(Runner runner) {
+    static Prediction execute_runner(Runner runner) {
         for (int i = 0; i != data.size(); ++i) {
             if (i % 1000 == 0) {
                 std::cout << i << std::endl;
@@ -84,9 +80,8 @@ private:
 
         const auto prediction = runner.get_results();
         L(ldebug) << "Prediction: " << prediction.get_log();
+        return prediction;
 
         // write to file
     }
-
-
 };

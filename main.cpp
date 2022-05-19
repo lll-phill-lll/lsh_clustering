@@ -17,30 +17,10 @@ int main(int argc, char** argv) {
     std::srand(std::time(nullptr));
     set_logger();
 
-
-    // std::string input;
-    // std::cin >> input;
-
-    // CGK<ACGT> cgk(input.size(), R1);
-
-    // std::string res = cgk.compute(input);
-    // std::cout << res << std::endl;
-
-
-    // run_example();
-
     data = Data(argv[1]);
 
-    LSH lsh(2, 2, 4, 10);
+    LSH lsh(20, 20, 40, 5000);
 
-    const auto& clusters = lsh.get_clusters();
-
-
-    for (const auto& cluster : clusters) {
-        for (int index : cluster) {
-            L(linfo) << index << " ";
-        }
-        L(linfo) << std::endl;
-    }
-
+    const auto& prediction = lsh.get_clusters();
+    L(linfo) << "Final result:\n" << prediction.get_log();
 }
