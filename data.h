@@ -26,7 +26,7 @@ private:
 
 
 public:
-    Data() = default;
+    Data() = delete;
 
     Data(const std::string& path) {
 
@@ -52,24 +52,16 @@ public:
         file_map = static_cast<char*>(mp);
 
         strings_starts.push_back(0);
-        std::cout << input_size << std::endl;
         for (off_t i = 0; i != input_size; ++i) {
             if (file_map[i] == '\n') {
-                std::cout << "ind: " << i + 1 << std::endl;
                 strings_starts.push_back(i + 1);
                 lines++;
             } else if (i == input_size - 1) {
-                std::cout << "ind: " << i + 1 << std::endl;
                 lines++;
                 strings_starts.push_back(i + 1);
             }
         }
 
-        std::cout << "lines: " << lines << std::endl;
-
-        for (int i = 0; i != lines; ++i) {
-            std::cout << (*this)[i] << std::endl;
-        }
 
         L(linfo) << "Data reading finished: " << lines << " lines";
     }
@@ -88,7 +80,6 @@ public:
     std::string_view operator[](int ind) const {
         off_t start_pos = strings_starts[ind];
         off_t len = strings_starts[ind + 1] - start_pos - 1;
-        std::cout << "data:\nstart: "<<start_pos << " len: " << len << std::endl;
         return std::string_view(file_map + start_pos, len);
     }
 

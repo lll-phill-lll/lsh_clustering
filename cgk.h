@@ -30,15 +30,14 @@ public:
         LN(ldebug, runner_id) << get_init_state();
     }
 
-    std::string compute(int index) {
-        int input_size = data->get_len(index);
+    std::string compute(std::string_view input) {
         std::string res;
         res.resize(embedding_len);
         int i = 0;
         for (int j = 0; j != embedding_len; ++j) {
             char c = dict.get_extra();
-            if (i < input_size) {
-                c = data->get_char(index, i);
+            if (i < input.size()) {
+                c = input[i];
             }
             res[j] = c;
             // deal with arbitrary letters
@@ -50,9 +49,8 @@ public:
             }
 
         }
-        std::cout << "Compute" << std::endl;
 
-        LN(ldebug, runner_id) << "embedding for string\n\t" << "<input>" << "\n\tis\n\t" << res;
+        LN(ldebug, runner_id) << "embedding for string\n\t" << input << "\n\tis\n\t" << res;
         return res;
     }
 
