@@ -31,4 +31,6 @@ int main(int argc, char** argv) {
     outfile.open (config.output_file);
     outfile << prediction.get_log();
     outfile.close();
+
+    delete data;
 }
