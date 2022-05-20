@@ -24,7 +24,11 @@ int main(int argc, char** argv) {
 
     LSH lsh(config);
 
-    const auto& prediction = lsh.get_clusters();
+    std::unordered_set<int> idxs_to_process;
+    for (int i = 0; i != data->size(); ++i) {
+        idxs_to_process.insert(i);
+    }
+    const auto& prediction = lsh.get_clusters(idxs_to_process);
     L(ldebug) << "Final result:\n" << prediction.get_log();
 
     std::ofstream outfile;

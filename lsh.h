@@ -38,14 +38,14 @@ public:
     }
 
 
-    Prediction get_clusters() {
+    Prediction get_clusters(const std::unordered_set<int>& idxs_to_process) {
         std::vector<Prediction> predictions;
 
         std::vector<std::future<Prediction>> futures;
 
         // compute each embedding
         for (int i = 0; i != config.r; ++i) {
-            futures.push_back( std::async(std::launch::async, execute_runner, runners[i]));
+            futures.push_back( std::async(std::launch::async, execute_runner, runners[i], idxs_to_process));
 
             if (futures.size() == config.thread_num || i == config.r - 1) {
                 for (int future_num = 0; future_num != futures.size(); ++future_num) {
@@ -64,10 +64,11 @@ private:
     Config config;
     std::vector<Runner> runners;
 
-    static Prediction execute_runner(Runner runner) {
-        for (int i = 0; i != data->size(); ++i) {
-            if (i % 1000 == 0) {
-                L(linfo) << "Processed: " << i;
+    static Prediction execute_runner(Runner runner, const std::unordered_set<int>& idxs_to_process) {
+        int num = 0;
+        for (int i : idxs_to_process) {
+            if (num % 1000 == 0) {
+                L(linfo) << "Processed: " << num;
             }
             runner.run(i);
         }
