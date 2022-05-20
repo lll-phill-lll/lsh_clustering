@@ -23,6 +23,10 @@ public:
         L(linfo) << "Intersection started";
 
         for (int i = 0; i != objects_count; ++i) {
+            if (i % 1000 == 0) {
+                L(linfo) << "Processing " << i << " object";
+            }
+
             if (object_with_cluster.count(i)) {
                 continue;
             }

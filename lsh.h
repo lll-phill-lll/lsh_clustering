@@ -70,6 +70,7 @@ private:
             if (num % 1000 == 0) {
                 L(linfo) << "Processed: " << num;
             }
+            ++num;
             runner.run(i);
         }
 

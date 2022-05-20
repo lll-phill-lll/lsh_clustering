@@ -60,7 +60,7 @@ public:
                 buffer << "\ncluster " << i << ":";
 
                 for (int object : cluster) {
-                    buffer << "\n\t" << object << ": " << (*data)[object];
+                    buffer << "," << object+1; //  << ": " << (*data)[object];
                 }
                 ++i;
             }
@@ -73,8 +73,24 @@ public:
         return object_to_cluster.size();
     }
 
+    int get_clusters_num() const {
+        return clusters.size();
+    }
+
+    std::unordered_set<int> get_next_clusters() const {
+        if (next_cluster < clusters.size()) {
+            return clusters[next_cluster++];
+        }
+        return {};
+    }
+
+    void reset_next_cluster() {
+        next_cluster = 0;
+    }
+
 
 private:
+    mutable int next_cluster = 0;
     std::unordered_map<int, int> object_to_cluster;
     std::vector<std::unordered_set<int>> clusters;
 
