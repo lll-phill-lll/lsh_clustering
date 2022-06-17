@@ -57,10 +57,18 @@ public:
         } else {
             int i = 0;
             for (const auto& cluster : clusters) {
-                buffer << "\ncluster " << i << ":";
+                // buffer << "\ncluster " << i << ":";
+                if (i != 0) {
+                    buffer << "\n";
+                }
 
+                int j = 0;
                 for (int object : cluster) {
-                    buffer << "," << object+1; //  << ": " << (*data)[object];
+                    if (j != 0) {
+                        buffer << ",";
+                    }
+                    ++j;
+                    buffer << object+1; //  << ": " << (*data)[object];
                 }
                 ++i;
             }
